@@ -1,16 +1,0 @@
-//	File[/Users/lee/Main/Proj/On_BJTU/Compiler_Projects/LiaLEX/regex_analyze.cpp] Line[315]	2022-09-29 19:30
-digraph WS { 
-1 [label = "|" ] 
-2 [label = "\\s" ] 
-1 -> 2 
-3 [label = "|" ] 
-4 [label = "\\t" ] 
-3 -> 4 
-5 [label = "|" ] 
-6 [label = "" ] 
-5 -> 6 
-7 [label = "\\n" ] 
-5 -> 7 
-3 -> 5 
-1 -> 3 
-} 
