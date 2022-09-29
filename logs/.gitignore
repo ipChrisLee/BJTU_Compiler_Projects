@@ -1,0 +1,5 @@
+nfa/**
+regex_ast/**
+dfa.dot
+std_log.txt
+debug.txt
