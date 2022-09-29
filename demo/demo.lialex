@@ -44,8 +44,8 @@
 /
 / Some element
 + Literal_Int = &Digit ~ &Digit *
-- Letter = &Lower_Letter | &Upper_Letter
-+ Identifier = &Letter ~ ( &Letter | &Digit ) *
+- ID_Letter = &Lower_Letter | &Upper_Letter | '_'
++ Identifier = &ID_Letter ~ ( &ID_Letter | &Digit ) *
 /
 / Some special
 - WS = '\s' | '\t' | '\r' | '\n'

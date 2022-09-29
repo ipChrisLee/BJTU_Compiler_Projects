@@ -49,7 +49,7 @@ struct Lexer {
 					buffer.clear();
 					now = start;
 				} else {
-					std::cerr << "Error when trans!" << std::endl;
+					std::cerr << "Error when trans[" << int(c) << "]!" << std::endl;
 					exit(-1);
 				}
 			}
