@@ -1,0 +1,56 @@
+- Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+- Lower_Letter = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+- Upper_Letter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z'
+/
+/ Keyword
++ Void = 'v' ~ 'o' ~ 'i' ~ 'd'
++ Int = 'i' ~ 'n' ~ 't'
++ Float = 'f' ~ 'l' ~ 'o' ~ 'a' ~ 't'
++ If = 'i' ~ 'f'
++ Else = 'e' ~ 'l' ~ 's' ~ 'e'
++ For = 'f' ~ 'o' ~ 'r'
++ Do = 'd' ~ 'o'
++ While = 'w' ~ 'h' ~ 'i' ~ 'l' ~ 'e'
++ Break = 'b' ~ 'r' ~ 'e' ~ 'a' ~ 'k'
++ Continue = 'c' ~ 'o' ~ 'n' ~ 't' ~ 'i' ~ 'n' ~ 'u' ~ 'e'
+/
+/ Seperator
++ SEP_LParen = '('
++ SEP_RParen = ')'
+/ Square bracket
++ SEP_LSBrkt = '['
++ SEP_RSBrkt = ']'
+/ Curly Brackets
++ SEP_LCBrkt = '{'
++ SEP_RCBrkt = '}'
++ SEP_Semicolon = ';'
+/
+/ Operator
++ OP_Minus = '-'
++ OP_Bang = '!'
++ OP_Add = '+'
++ OP_Mul = '*'
++ OP_Div = '/'
++ OP_Mod = '%'
++ OP_LAnd = '&' ~ '&'
++ OP_LOR = '|' ~ '|'
++ OP_Assign = '='
++ OP_EQ = '=' ~ '='
++ OP_NEQ = '!' ~ '='
++ OP_LT = '<'
++ OP_LE = '<' ~ '='
++ OP_GT = '>'
++ OP_GE = '>='
+/
+/ Some element
++ Literal_Int = &Digit ~ &Digit *
+- Letter = &Lower_Letter | &Upper_Letter
++ Identifier = &Letter ~ ( &Letter | &Digit ) *
+/
+/ Some special
+- WS = '\s' | '\t' | '\r' | '\n'
++ WS_Str = &WS ~ &WS *
+- Line_Comment_Legal_Ch = &Upper_Letter | &Lower_Letter | &Digit | '!' | '@' | '#' | '$' | '%' | '^' | '&' | '*' | '(' | ')' | '-' | '_' | '=' | '+' | '[' | ']' | '{' | '}' | '\\' | '|' | ';' | ':' | '\'' | '"' | ',' | '<' | '.' | '>' | '/' | '?' | '`' | '~' | '\t' | '\s'
++ Line_Comments = '/' ~ '/' ~ &Line_Comment_Legal_Ch * ~ '\n'
+- M_Line_Comment_Legal_Ch = &Upper_Letter | &Lower_Letter | &Digit | '!' | '@' | '#' | '$' | '%' | '^' | '&' | '(' | ')' | '-' | '_' | '=' | '+' | '[' | ']' | '{' | '}' | '\\' | '|' | ';' | ':' | '\'' | '"' | ',' | '<' | '.' | '>' | '?' | '`' | '~' | '\t' | '\s' | '\n'
++ M_Line_Comments = '/' ~ '*' ~ &M_Line_Comment_Legal_Ch * ~ '*' ~ '/'

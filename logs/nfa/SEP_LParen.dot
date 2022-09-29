@@ -1,0 +1,5 @@
+//	File[/Users/lee/Main/Proj/On_BJTU/Compiler_Projects/LiaLEX/fa.cpp] Line[172]	2022-09-29 19:30
+digraph NFA{ 
+140408081450888 [label = start] 
+140408081450888 -> 140408081450984 [label = "(" ] 
+} 

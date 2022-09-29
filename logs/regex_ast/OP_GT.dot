@@ -1,0 +1,4 @@
+//	File[/Users/lee/Main/Proj/On_BJTU/Compiler_Projects/LiaLEX/regex_analyze.cpp] Line[315]	2022-09-29 19:30
+digraph OP_GT { 
+1 [label = ">" ] 
+} 

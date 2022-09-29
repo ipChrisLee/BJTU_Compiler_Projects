@@ -1,0 +1,4 @@
+- Digit = '0' | '1'
++ IntLiteral = &Digit ~ &Digit *
+- WS = '\t' | '\s' | '\n'
++ WSStr = &WS ~ &WS *

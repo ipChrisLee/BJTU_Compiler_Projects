@@ -1,0 +1,16 @@
+//	File[/Users/lee/Main/Proj/On_BJTU/Compiler_Projects/LiaLEX/regex_analyze.cpp] Line[315]	2022-09-29 19:30
+digraph Else { 
+1 [label = "~" ] 
+2 [label = "e" ] 
+1 -> 2 
+3 [label = "~" ] 
+4 [label = "l" ] 
+3 -> 4 
+5 [label = "~" ] 
+6 [label = "s" ] 
+5 -> 6 
+7 [label = "e" ] 
+5 -> 7 
+3 -> 5 
+1 -> 3 
+} 
