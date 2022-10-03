@@ -2,3 +2,4 @@
 cmake-build-debug
 testDir
 build
+.DS_Store
