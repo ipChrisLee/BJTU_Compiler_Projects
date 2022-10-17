@@ -16,22 +16,36 @@ int main(int argc, char ** argv) {
 	auto outFilePath = std::string();
 	auto lexName = std::string();
 	auto argParser = moe::ArgParser();
-	argParser.emplace_option(
-		0, "name", true, [&lexName](const char * s) {
-			lexName = s;
-		}
+	argParser.add_option(
+		moe::ArgOption(
+			std::nullopt, "name", true, [&lexName](std::string_view s) {
+				lexName = s;
+			}, std::nullopt
+		)
 	);
-	argParser.emplace_option(
-		0, "lex", true, [&lexFilePath](const char * s) {
-			lexFilePath = s;
-		}
+	argParser.add_option(
+		moe::ArgOption(
+			std::nullopt, "lex", true, [&lexFilePath](std::string_view s) {
+				lexFilePath = s;
+			}, std::nullopt
+		)
 	);
-	argParser.emplace_option(
-		'o', nullptr, true, [&outFilePath](const char * s) {
-			outFilePath = s;
-		}
+	argParser.add_option(
+		moe::ArgOption(
+			'o', std::nullopt, true, [&outFilePath](std::string_view s) {
+				outFilePath = s;
+			}, std::nullopt
+		)
 	);
 	argParser.parse(argc, argv);
+	
+	//  print info of this generation.
+	std::cout << moe::set_decorator(moe::Decorator::c_blue)
+	          << "Generating `" << lexName
+	          << "` lexer on \"" << outFilePath
+	          << "\" with lex defined in \"" << lexFilePath << "\"."
+	          << moe::reset_decorator() << std::endl;
+	
 	moe_slog_info(lexFilePath);
 	auto ruleAndRegexAST = scan_tex_rules(lexFilePath);
 	auto rules = [&ruleAndRegexAST]() {
