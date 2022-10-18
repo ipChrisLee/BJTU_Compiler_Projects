@@ -28,11 +28,15 @@ struct Lexer {
 	static_assert(std::is_enum<TokenType>::value);
 	std::map<NodeID_t, TokenType> nodeType;
 	std::map<NodeID_t, std::map<char, NodeID_t>> edges;
-	NodeID_t start;
-	NodeID_t now;
+	NodeID_t start = -1;
+	NodeID_t now = -1;
 	
 	
 	std::vector<Token<TokenType>> gen(std::string str) {
+		if (now == -1 || start == -1) {
+			std::cerr << "You should specify `start` and `now`!" << std::endl;
+			exit(-1);
+		}
 		auto res = std::vector<Token<TokenType>>();
 		auto buffer = std::string();
 		for (auto it = str.begin(); it != str.end(); ++it) {
