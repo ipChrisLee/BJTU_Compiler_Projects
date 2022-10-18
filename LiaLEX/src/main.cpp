@@ -44,6 +44,7 @@ int main(int argc, char ** argv) {
 	          << "\" with lex defined in \"" << lexFilePath << "\"."
 	          << moe::reset_decorator() << std::endl;
 	
+	using namespace LiaLEX;
 	moe::register_std_log("logs/std_log.txt");
 	moe_slog_info(lexFilePath);
 	auto ruleAndRegexAST = scan_tex_rules(lexFilePath);

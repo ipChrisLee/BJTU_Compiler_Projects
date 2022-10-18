@@ -10,6 +10,8 @@
 #include "moe/moe_concept.hpp"
 
 
+namespace LiaLEX {
+
 enum class RuleType {
 	Anonymous,
 	Normal,
@@ -84,4 +86,4 @@ scan_tex_rules(std::string_view filePath);
 
 std::string char_to_dot_string(char c);
 
-
+}

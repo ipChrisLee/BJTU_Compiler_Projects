@@ -6,6 +6,8 @@
 #include <vector>
 
 
+namespace LiaLEX {
+
 FA::FA(char ch) {
 	auto s = std::make_shared<FANode>();
 	auto t = std::make_shared<FANode>();
@@ -397,3 +399,4 @@ void genHppBasingOnLex(
 	// #include "../LiaLEX/lialex_runtime/lialex_runtime.hpp"
 }
 
+}

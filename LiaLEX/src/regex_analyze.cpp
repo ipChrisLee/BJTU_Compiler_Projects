@@ -5,6 +5,7 @@
 #include <memory>
 #include "moe/log.hpp"
 
+namespace LiaLEX {
 
 RegexASTNode::RegexASTNode(char ch) : infoType(RegexASTNodeInfoType::ch), info(ch) {
 }
@@ -357,4 +358,6 @@ std::string regex_operator_to_string(RegexOperator op) {
 		case RegexOperator::concat:
 			return "~";
 	}
+}
+
 }

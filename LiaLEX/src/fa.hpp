@@ -8,6 +8,7 @@
 #include "lialex_runtime.hpp"
 #include "moe/log.hpp"
 
+namespace LiaLEX {
 
 struct FAEdge;
 
@@ -59,3 +60,5 @@ void genHppBasingOnLex(
 	const FA & dfa, const std::string & filePath, const std::string & lexName,
 	const std::vector<Rule> & rules
 );
+
+}
