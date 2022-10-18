@@ -12,12 +12,10 @@ include_directories(./moe)
 add_subdirectory(LiaLEX)
 
 add_compile_options(
-		-g -Wall -Werror -Wextra -pthread
+		-g -Wall -Werror -Wextra
 )
 
-add_link_options(-lpthread -lm -v -pthread)
+add_link_options(-lm -v)
 
 add_executable(Compiler_Projects main.cpp)
 target_link_libraries(Compiler_Projects moe)
-
-add_subdirectory(./demo)

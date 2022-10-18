@@ -1,7 +1,0 @@
-int a=10;
-int b=20;
-int c=20;
-while (c>0){
-	c=c-1;
-	print_int(c);
-}

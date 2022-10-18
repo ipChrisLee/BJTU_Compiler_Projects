@@ -42,7 +42,7 @@ int main(int argc, char ** argv) {
 	//  print info of this generation.
 	std::cout << moe::set_decorator(moe::Decorator::c_blue)
 	          << "Generating `" << lexName
-	          << "` lexer on \"" << outFilePath
+	          << "` lexer to \"" << outFilePath
 	          << "\" with lex defined in \"" << lexFilePath << "\"."
 	          << moe::reset_decorator() << std::endl;
 	
@@ -58,5 +58,9 @@ int main(int argc, char ** argv) {
 	auto nfa = merge_all(ruleAndRegexAST);
 	auto dfa = nfa2dfa(nfa);
 	genHppBasingOnLex(dfa, outFilePath, lexName, rules);
+	
+	//  print info of this generation.
+	std::cout << moe::set_decorator(moe::Decorator::c_green) << "Success!"
+	          << moe::reset_decorator() << std::endl;
 	return 0;
 }
