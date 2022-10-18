@@ -1,1 +1,1 @@
-# LiaLEX is another LEX
+# LiaLEX Is Another LEX

@@ -1,9 +1,9 @@
 #include "regex_analyze.hpp"
 
 #include <filesystem>
-#include <moe/debugger.hpp>
+#include "moe/debugger.hpp"
 #include <memory>
-#include <moe/log.hpp>
+#include "moe/log.hpp"
 
 
 RegexASTNode::RegexASTNode(char ch) : infoType(RegexASTNodeInfoType::ch), info(ch) {

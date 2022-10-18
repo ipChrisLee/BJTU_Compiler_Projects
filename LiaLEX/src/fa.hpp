@@ -5,8 +5,8 @@
 #include <optional>
 #include <set>
 #include "regex_analyze.hpp"
-#include "lialex_runtime/lialex_runtime.hpp"
-#include <moe/log.hpp>
+#include "lialex_runtime.hpp"
+#include "moe/log.hpp"
 
 
 struct FAEdge;

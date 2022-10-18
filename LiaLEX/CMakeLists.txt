@@ -13,8 +13,8 @@ add_link_options(-lm -v)
 
 add_executable(
 		LiaLEX
-		main.cpp
-		regex_analyze.cpp
-		fa.cpp
+		src/main.cpp
+		src/regex_analyze.cpp
+		src/fa.cpp
 )
 target_link_libraries(LiaLEX moe)
