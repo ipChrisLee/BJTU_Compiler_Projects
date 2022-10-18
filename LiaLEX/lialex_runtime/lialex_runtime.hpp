@@ -7,7 +7,7 @@
 
 namespace lialex_runtime {
 
-using NodeID_t = int64_t;
+using NodeID_t = uint64_t;
 
 template<typename TokenType>
 struct Token {

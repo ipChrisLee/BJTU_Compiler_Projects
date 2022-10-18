@@ -337,7 +337,7 @@ void genHppBasingOnLex(
 	ofs << "#include <cstdint>" << std::endl;
 	ofs << "#include <string>" << std::endl << std::endl << std::endl;
 	ofs << "namespace " << lexName << " {" << std::endl;
-	ofs << "using NodeID_t = int64_t;" << std::endl;
+	ofs << "using NodeID_t = uint64_t;" << std::endl;
 	
 	//  Token Type
 	ofs << "enum class TokenType {" << std::endl;
