@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_GLIBCXX_DEBUG")
 
 include_directories(./LiaLEX/lialex_runtime)
+include_directories(./LoCGL)
 
 add_subdirectory(moe)
 include_directories(./moe)
