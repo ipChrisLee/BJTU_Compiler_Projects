@@ -1,81 +1,7 @@
 #include "LL1.hpp"
 
 
-namespace gra {
-
-void Gra::read_gra(std::string_view src) {
-	auto preRule = std::string();
-	auto lines = moe::split_string_on_char(src, "\n");
-	for (auto & line: lines) {
-//			moe_dbg(line);
-		moe_slog_info(line);
-		auto ruleItems = moe::split_string_on_char(line, " \t");
-		auto ruleDef = std::vector<std::string>();
-		auto idx = i32(-1);
-		moe_assert(ruleItems.size() > 1, "There should be more than one item!");
-		if (ruleItems[0] != "|") {  //  new rule
-			preRule = ruleItems[0];
-			moe_assert(ruleItems[1] == "->",
-			           "For rule define line, \"->\" should exist.");
-			idx = 2;
-		} else {    //  continue
-			idx = 1;
-		}
-		moe_assert(i32(ruleItems.size()) > idx, "Error!");
-		for (; idx < i32(ruleItems.size()); ++idx) {
-			ruleDef.emplace_back(ruleItems[idx]);
-		}
-		allRules[preRule].emplace_back(std::move(ruleDef));
-		vocabulary.insert(preRule);
-	}
-}
-
-void Gra::read_lex(std::string_view src) {
-	auto lines = moe::split_string_on_char(src, "\n");
-	for (auto & line: lines) {
-//		moe_slog_info(line);
-		auto ruleDef = moe::split_string_on_char(line, " \t\n");
-		if (ruleDef[0] == "+") {
-			isTerm[ruleDef[1]] = true;
-			vocabulary.insert(ruleDef[1]);
-		}
-	}
-}
-
-void Gra::log_it(moe::LocalLog & lLog) {
-	{
-		lLog.info("Vocabulary:");
-		moe_r_set(lLog.indent, lLog.indent + 1);
-		for (auto & v: vocabulary) {
-			lLog.info(v, (isTerm[v] ? "Vt" : "Vn"));
-		}
-	}
-	{
-		lLog.info("Rules:");
-		moe_r_set(lLog.indent, lLog.indent + 1);
-		for (auto & rule: allRules) {
-			auto & left = rule.first;
-			lLog.info(left, "->");
-			moe_r_set(lLog.indent, lLog.indent + 1);
-			for (auto & right: rule.second) {
-				auto buf = std::string();
-				for (auto & item: right) {
-					buf += item;
-					buf.push_back(' ');
-				}
-				lLog.info(buf);
-			}
-		}
-	}
-}
-
-}
-
 namespace ll1 {
-const std::string startStateName = "CompUnit";
-
-const std::string epsilon = "$";
-
 
 void LL1Analyzer::get_first() {
 	analyze_epsilon_reachable();
@@ -93,12 +19,12 @@ void LL1Analyzer::get_first() {
 			for (const auto & rule: allRules[x]) {
 				auto beforeSZ = first[x].size();
 				auto a = rule[0];
-				if (isTerm[a] || a == epsilon) {
+				if (isTerm[a] || a == gra::epsilon) {
 					first[x].insert(a);
 				} else {    //  `a` is not terminator
 					{
 						auto tmp = first[a];
-						tmp.erase(epsilon);
+						tmp.erase(gra::epsilon);
 						first[x].insert(tmp.begin(), tmp.end());
 					}
 					auto allEpsilon = true;
@@ -109,20 +35,20 @@ void LL1Analyzer::get_first() {
 							break;
 						}
 						auto tmp = first[rule[i]];
-						tmp.erase(epsilon);
+						tmp.erase(gra::epsilon);
 						++i;
 					}
 				}
 				{
 					auto epsilonInAllFirst = true;
 					for (auto y: rule) {
-						if (!first[y].count(epsilon)) {
+						if (!first[y].count(gra::epsilon)) {
 							epsilonInAllFirst = false;
 							break;
 						}
 					}
 					if (epsilonInAllFirst) {
-						first[x].insert(epsilon);
+						first[x].insert(gra::epsilon);
 					}
 				}
 				auto afterSZ = first[x].size();
@@ -135,7 +61,7 @@ void LL1Analyzer::get_first() {
 void LL1Analyzer::analyze_epsilon_reachable() {
 	auto vis = std::map<std::string, bool>();
 	auto st = std::stack<std::string>();
-	st.push(epsilon);
+	st.push(gra::epsilon);
 	while (!st.empty()) {
 		auto u = st.top();
 		st.pop();
@@ -145,7 +71,7 @@ void LL1Analyzer::analyze_epsilon_reachable() {
 		for (auto & rule: allRules) {
 			auto & left = rule.first;
 			for (auto & right: rule.second) {
-				if (right.size() == 1 && right[0] == epsilon) {
+				if (right.size() == 1 && right[0] == gra::epsilon) {
 					if (!vis[left]) {
 						st.push(left);
 					}
@@ -180,5 +106,8 @@ void LL1Analyzer::log_it(moe::LocalLog & lLog) {
 	}
 }
 
+void LL1Analyzer::get_follow() {
+	moe_todo();
+}
 
 }

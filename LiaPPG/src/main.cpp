@@ -72,6 +72,7 @@ int main(int argc, char ** argv) {
 	);
 	auto analyzerLogger = moe_llog("logs/liappg/analyzer.txt", " ", true, "//");
 	analyzer.get_first();
+	analyzer.get_follow();
 	analyzer.log_it(analyzerLogger);
 	
 	

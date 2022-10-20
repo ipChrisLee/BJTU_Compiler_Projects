@@ -49,8 +49,8 @@
 /
 / Some special
 - WS = '\s' | '\t' | '\r' | '\n'
-+ WS_Str = &WS ~ &WS *
+@ WS_Str = &WS ~ &WS *
 - Line_Comment_Legal_Ch = &Upper_Letter | &Lower_Letter | &Digit | '!' | '@' | '#' | '$' | '%' | '^' | '&' | '*' | '(' | ')' | '-' | '_' | '=' | '+' | '[' | ']' | '{' | '}' | '\\' | '|' | ';' | ':' | '\'' | '"' | ',' | '<' | '.' | '>' | '/' | '?' | '`' | '~' | '\t' | '\s'
-+ Line_Comments = '/' ~ '/' ~ &Line_Comment_Legal_Ch * ~ '\n'
+@ Line_Comments = '/' ~ '/' ~ &Line_Comment_Legal_Ch * ~ '\n'
 - M_Line_Comment_Legal_Ch = &Upper_Letter | &Lower_Letter | &Digit | '!' | '@' | '#' | '$' | '%' | '^' | '&' | '(' | ')' | '-' | '_' | '=' | '+' | '[' | ']' | '{' | '}' | '\\' | '|' | ';' | ':' | '\'' | '"' | ',' | '<' | '.' | '>' | '?' | '`' | '~' | '\t' | '\s' | '\n'
-+ M_Line_Comments = '/' ~ '*' ~ &M_Line_Comment_Legal_Ch * ~ '*' ~ '/'
+@ M_Line_Comments = '/' ~ '*' ~ &M_Line_Comment_Legal_Ch * ~ '*' ~ '/'

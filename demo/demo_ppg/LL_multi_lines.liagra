@@ -1,4 +1,7 @@
-CompUnit -> V Eq E
+CompUnit -> Stmts
+Stmts -> Stmt Stmts
+	   | Stmt
+Stmt -> V Eq E
 E -> T E_
 E_ -> A T E_
 	| $

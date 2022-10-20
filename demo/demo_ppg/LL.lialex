@@ -8,4 +8,4 @@
 + LParen = '('
 + RParen = ')'
 - WS = '\s' | '\n' | '\t' | '\r'
-+ WS_Str = &WS ~ &WS *
+@ WS_Str = &WS ~ &WS *
