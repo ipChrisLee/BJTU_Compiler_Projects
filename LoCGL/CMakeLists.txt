@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(LiaPPG)
+project(LoCGL)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
@@ -11,9 +11,8 @@ add_compile_options(
 
 add_link_options(-lm -v)
 
-add_executable(
-		LiaPPG
-		src/main.cpp
+add_library(
+		LoCGL SHARED
+		src/LL1.cpp
 )
-target_link_libraries(LiaPPG moe)
-target_link_libraries(LiaPPG LoCGL)
+

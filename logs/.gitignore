@@ -1,5 +1,6 @@
 nfa/*
 regex_ast/*
+liappg/*
 dfa.dot
 std_log.txt
 debug.txt
