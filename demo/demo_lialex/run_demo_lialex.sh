@@ -15,6 +15,6 @@ mkdir -p "${cmake_folder}"
 cmake -B "${cmake_folder}" -G "Unix Makefiles"
 cd ${cmake_folder} && make LiaLEX && cd ..
 ${lialex_exe} --lex ${lialex_file} -o ${target_hpp} --name ${lex_name}
-clang++ ${this_demo_main_cpp} -o ${this_demo_main} -std=c++17
-./${this_demo_main} < ${this_demo_src} > ${this_demo_res}
-rm ${this_demo_main}
+clang++ ${this_demo_main_cpp} -o ${this_demo_main} -std=c++17 &&
+  ./${this_demo_main} <${this_demo_src} >${this_demo_res} &&
+  rm ${this_demo_main}

@@ -30,6 +30,7 @@ struct Lexer {
 	std::map<NodeID_t, std::map<char, NodeID_t>> edges;
 	NodeID_t start = -1;
 	NodeID_t now = -1;
+	std::set<TokenType> tokensToBeThrown;
 	
 	
 	std::vector<Token<TokenType>> gen(std::string str) {
@@ -38,6 +39,11 @@ struct Lexer {
 			exit(-1);
 		}
 		auto res = std::vector<Token<TokenType>>();
+		auto emplace = [&res, this](TokenType tokenType, std::string buffer) {
+			if (!tokensToBeThrown.count(tokenType)) {
+				res.template emplace_back(tokenType, std::move(buffer));
+			}
+		};
 		auto buffer = std::string();
 		for (auto it = str.begin(); it != str.end(); ++it) {
 			auto c = *it;
@@ -49,7 +55,7 @@ struct Lexer {
 				now = edges[now][c];
 			} else {    //  Node `now` has no edge with 'c';
 				if (nodeType.count(now)) {
-					res.template emplace_back(nodeType[now], buffer);
+					emplace(nodeType[now], buffer);
 					--it;
 					buffer.clear();
 					now = start;
@@ -60,7 +66,7 @@ struct Lexer {
 			}
 		}
 		if (nodeType.count(now)) {
-			res.template emplace_back(nodeType[now], buffer);
+			emplace(nodeType[now], buffer);
 		} else {
 			std::cerr << "Error at end!" << std::endl;
 			exit(-1);

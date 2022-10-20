@@ -16,15 +16,12 @@ int main() {
 		B::edges,
 		B::start,
 		B::start,
+		B::tokensToBeThrown,
 	};
 	auto tokens = lexer.gen(srcProg);
 	for (auto & token: tokens) {
-		if (token.tokenType != B::TokenType::WS_Str &&
-			token.tokenType != B::TokenType::Line_Comments &&
-			token.tokenType != B::TokenType::M_Line_Comments) {
-			std::cout << B::get_token_type_name(token.tokenType) << ": "
-			          << token.content << std::endl;
-		}
+		std::cout << B::get_token_type_name(token.tokenType) << ": "
+		          << token.content << std::endl;
 	}
 	return 0;
 }

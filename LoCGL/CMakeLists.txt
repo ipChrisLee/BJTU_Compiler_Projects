@@ -14,5 +14,6 @@ add_link_options(-lm -v)
 add_library(
 		LoCGL SHARED
 		src/LL1.cpp
+		src/grammar.cpp
 )
 

@@ -336,26 +336,39 @@ void genHppBasingOnLex(
 	auto ofs = std::ofstream(filePath);
 	ofs << "#pragma once" << std::endl;
 	ofs << "#include <map>" << std::endl;
+	ofs << "#include <set>" << std::endl;
 	ofs << "#include <cstdint>" << std::endl;
-	ofs << "#include <string>" << std::endl << std::endl << std::endl;
+	ofs << "#include <string>" << std::endl;
+	ofs << "#include <string_view>" << std::endl;
+	ofs << std::endl << std::endl << std::endl;
 	ofs << "namespace " << lexName << " {" << std::endl;
 	ofs << "using NodeID_t = uint64_t;" << std::endl;
 	
 	//  Token Type
 	ofs << "enum class TokenType {" << std::endl;
 	for (auto & rule: rules) {
-		if (rule.ruleType == RuleType::Normal) {
+		if (moe::enum_in(rule.ruleType, {RuleType::Normal, RuleType::Throw})) {
 			ofs << "\t" << rule.name << ", " << std::endl;
 		}
 	}
 	ofs << "};" << std::endl << std::endl;
 	//  Token Type Finished.
 	
+	//  Token to be thrown.
+	ofs << "static std::set<TokenType> tokensToBeThrown {" << std::endl;
+	for (auto & rule: rules) {
+		if (rule.ruleType == RuleType::Throw) {
+			ofs << "\tTokenType::" << rule.name << "," << std::endl;
+		}
+	}
+	ofs << "};" << std::endl;
+	//  Fin
+	
 	//  Token to string
-	ofs << "inline std::string get_token_type_name(TokenType token) {" << std::endl;
+	ofs << "static std::string_view get_token_type_name(TokenType token) {" << std::endl;
 	ofs << "\tswitch (token) {" << std::endl;
 	for (auto & rule: rules) {
-		if (rule.ruleType == RuleType::Normal) {
+		if (moe::enum_in(rule.ruleType, {RuleType::Normal, RuleType::Throw})) {
 			ofs << "\t\tcase TokenType::" << rule.name << ":" << std::endl;
 			ofs << "\t\t\treturn \"" << rule.name << "\";" << std::endl;
 		}
