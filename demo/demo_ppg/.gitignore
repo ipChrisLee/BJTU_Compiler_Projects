@@ -1,7 +1,7 @@
 *
 !main.cpp
-!LL.lialex
-!LL.liagra
+!./LL.lialex
+!./LL.liagra
 !run_demo_liappg.sh
-!src.LL
+!./src.LL
 !.gitignore

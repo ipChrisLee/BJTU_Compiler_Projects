@@ -8,20 +8,10 @@ fi
 cmake_folder=cmake-build-debug
 lialex_exe=${cmake_folder}/LiaLEX/LiaLEX
 
-this_demo_path=demo/demo_ppg
+this_demo_path=demo/demo_with_cmake
 
 lialex_file=${this_demo_path}/LL.lialex
-target_lialex_hpp=${this_demo_path}/LL.hpp
+target_lialex_hpp=${this_demo_path}/src/LL_Lexer.hpp
 lex_name=ll_lex
-this_demo_main_cpp=${this_demo_path}/main.cpp
-this_demo_main=${this_demo_path}/main
-this_demo_src=${this_demo_path}/src.LL
-this_demo_res=${this_demo_path}/res.txt
 
-mkdir -p "${cmake_folder}"
-cmake -B "${cmake_folder}" -G "Unix Makefiles"
-cd ${cmake_folder} && make LiaLEX && cd ..
 ${lialex_exe} --lex ${lialex_file} -o ${target_lialex_hpp} --name ${lex_name}
-clang++ ${this_demo_main_cpp} -o ${this_demo_main} -std=c++17 &&
-  ./${this_demo_main} <${this_demo_src} >${this_demo_res} &&
-  rm ${this_demo_main}
