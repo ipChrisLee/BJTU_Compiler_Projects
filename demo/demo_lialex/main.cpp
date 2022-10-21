@@ -1,5 +1,5 @@
 #include "B.hpp"
-#include "../../LiaLEX/lialex_runtime/lialex_runtime.hpp"
+#include "../../runtime_lib/lialex_runtime.hpp"
 #include <string>
 #include <iostream>
 

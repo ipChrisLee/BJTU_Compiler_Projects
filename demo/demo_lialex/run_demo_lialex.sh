@@ -1,4 +1,10 @@
 # Run at root of project.
+root_judgement=$(sed -n '2p' CMakeLists.txt)
+if [ "${root_judgement}" != "project(Compiler_Projects)" ]; then
+  echo "Judgement finds that second line of ${PWD} is not \"project(Compiler_Projects)\", check if you are running this script on the project root."
+  exit 1
+fi
+
 cmake_folder=cmake-build-debug
 lialex_exe=${cmake_folder}/LiaLEX/LiaLEX
 

@@ -5,7 +5,7 @@
 #include <optional>
 #include <set>
 #include "regex_analyze.hpp"
-#include "lialex_runtime.hpp"
+#include "../../runtime_lib/lialex_runtime.hpp"
 #include "moe/log.hpp"
 
 namespace LiaLEX {
