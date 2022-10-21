@@ -10,7 +10,7 @@ void Gra::read_gra(std::string_view src) {
 	auto lines = moe::split_string_on_char(src, "\n");
 	for (auto & line: lines) {
 //			moe_dbg(line);
-		moe_slog_info(line);
+//		moe_slog_info(line);
 		auto ruleItems = moe::split_string_on_char(line, " \t");
 		auto ruleDef = std::vector<std::string>();
 		auto idx = i32(-1);

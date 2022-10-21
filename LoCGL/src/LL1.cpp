@@ -66,7 +66,7 @@ void LL1Analyzer::get_follow() {
 		changed = false;
 		for (auto & rule: allRules) {
 			auto & A = rule.first;
-			moe_slog_info(A);
+//			moe_slog_info(A);
 			for (auto & right: rule.second) {
 				for (auto i = size_t(0); i < right.size(); ++i) {
 					auto & B = right[i];
