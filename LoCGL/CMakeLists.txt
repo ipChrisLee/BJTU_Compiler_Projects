@@ -13,7 +13,7 @@ add_link_options(-lm -v)
 
 add_library(
 		LoCGL SHARED
-		src/LL1.cpp
+		src/ll1_analyzer.cpp
 		src/grammar.cpp
 )
 

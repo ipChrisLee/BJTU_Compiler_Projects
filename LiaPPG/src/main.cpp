@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <arg_parser.hpp>
 #include <log.hpp>
-#include <LL1.hpp>
+#include <ll1_analyzer.hpp>
 #include <debugger.hpp>
 
 
