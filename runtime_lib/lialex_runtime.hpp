@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdint>
+#include <functional>
 
 
 namespace lialex_runtime {
@@ -21,6 +22,19 @@ struct Token {
 	
 	Token(Token &&) noexcept = default;
 	
+	std::string print_to_parser(
+		std::function<std::string_view(TokenType token)> & get_token_type_name
+	) const {
+		auto res = std::string();
+		res += get_token_type_name(tokenType);
+		res += ' ';
+		for (auto & ch: content) {
+			res += std::to_string(int(ch));
+			res += ' ';
+		}
+		res += '\n';
+		return res;
+	}
 };
 
 template<typename TokenType>
