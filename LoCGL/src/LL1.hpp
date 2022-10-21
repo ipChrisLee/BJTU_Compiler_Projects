@@ -28,7 +28,7 @@ struct LL1Analyzer : gra::Gra { //  LL(1) analyzer
 	
 	void analyze_epsilon_reachable();
 	
-	std::set<std::string>first_of(const std::vector<std::string> & items);
+	std::set<std::string> first_of(const std::vector<std::string> & items);
 	
 	void get_first();
 	
