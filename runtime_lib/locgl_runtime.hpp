@@ -23,7 +23,7 @@ struct Rule {
 	
 	Rule(
 		std::string_view src,
-		std::function<RuleType(std::string_view str)> & strToRuleType
+		std::function<RuleType(std::string_view str)> strToRuleType
 	) {
 		using namespace std::string_view_literals;
 		auto res = std::vector<std::string>();
