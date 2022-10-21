@@ -23,7 +23,7 @@ struct Token {
 	Token(Token &&) noexcept = default;
 	
 	std::string print_to_parser(
-		std::function<std::string_view(TokenType token)> & get_token_type_name
+		std::function<std::string_view(TokenType token)> get_token_type_name
 	) const {
 		auto res = std::string();
 		res += get_token_type_name(tokenType);
@@ -37,6 +37,7 @@ struct Token {
 	}
 };
 
+
 template<typename TokenType>
 struct Lexer {
 	static_assert(std::is_enum<TokenType>::value);
@@ -48,7 +49,7 @@ struct Lexer {
 	
 	
 	std::vector<Token<TokenType>> gen(std::string str) {
-		if (now == -1 || start == -1) {
+		if (now == NodeID_t(-1) || start == NodeID_t(-1)) {
 			std::cerr << "You should specify `start` and `now`!" << std::endl;
 			exit(-1);
 		}
