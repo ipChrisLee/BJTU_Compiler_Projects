@@ -16,4 +16,5 @@ add_library(
 		src/ll1_analyzer.cpp
 		src/grammar.cpp
 )
+target_link_libraries(LoCGL moe)
 

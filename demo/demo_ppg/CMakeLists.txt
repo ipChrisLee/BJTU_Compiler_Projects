@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(demo_with_cmake)
+project(demo_ppg)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
@@ -15,8 +15,8 @@ add_compile_options(
 add_link_options(-lm -v)
 
 add_executable(
-		demo_with_cmake
+		demo_ppg
 		src/main.cpp
 )
-target_link_libraries(demo_with_cmake moe)
-target_link_libraries(demo_with_cmake LoCGL)
+target_link_libraries(demo_ppg moe)
+target_link_libraries(demo_ppg LoCGL)

@@ -1,4 +1,18 @@
-这是[ipLee](https://github.com/ipChrisLee)为[BJTU](https://www.bjtu.edu.cn)的Compiler课写的大作业。包括：
+# 介绍
+
+这是[ipLee](https://github.com/ipChrisLee)为[BJTU](https://www.bjtu.edu.cn)的Compiler课写的大作业。
+
+你可以执行以下命令克隆本仓库：
+
+```shell
+git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
+```
+
+
+
+# 项目组成
+
+包括：
 
 * 词法分析器生成器LiaLEX（LiaLEX is another LEX）
 	* 怎么润Demo：
@@ -29,6 +43,8 @@
 * To be done.
 
 
+
+# 文件架构
 
 本项目的文件架构：
 

@@ -74,12 +74,16 @@ struct LL1Parser {
 		auto res = std::set<RuleType>();
 		auto brk = false;
 		for (auto & item: items) {
-			auto tmp = first[item];
-			tmp.erase(epsilon);
-			res.insert(tmp.begin(), tmp.end());
-			if (!first[item].count(epsilon)) {
-				brk = true;
-				break;
+			if (item == epsilon) {
+			
+			} else {
+				auto tmp = first[item];
+				tmp.erase(epsilon);
+				res.insert(tmp.begin(), tmp.end());
+				if (!first[item].count(epsilon)) {
+					brk = true;
+					break;
+				}
 			}
 		}
 		if (!brk) {
@@ -93,8 +97,8 @@ struct LL1Parser {
 		const std::vector<Rule<RuleType>> items,
 		size_t & idx
 	) {
-		std::cerr << "Now->ruleType:\t" << int(now->ruleType) << std::endl;
-		if (terms.count(now->ruleType)) {
+//		std::cerr << "Now->ruleType:\t" << int(now->ruleType) << std::endl;
+		if (terms.count(now->ruleType) || now->ruleType == epsilon) {
 			if (now->ruleType == epsilon) {
 			
 			} else {

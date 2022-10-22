@@ -1,7 +1,3 @@
-*
-!main.cpp
-!./LL.lialex
-!./LL.liagra
-!run_demo_liappg.sh
-!./src.LL
-!.gitignore
+dst.dot
+src/ll_lexer_info.hpp
+src/ll_parser_info.hpp

@@ -22,6 +22,7 @@ namespace ll1 {
  *    | e f g
  */
 struct LL1Analyzer : gra::Gra { //  LL(1) analyzer
+  protected:
 	std::set<std::string> toEpsilon;
 	std::map<std::string, std::set<std::string>> first;
 	std::map<std::string, std::set<std::string>> follow;
@@ -33,6 +34,9 @@ struct LL1Analyzer : gra::Gra { //  LL(1) analyzer
 	void get_first();
 	
 	void get_follow();
+  
+  public:
+	void analyze();
 	
 	void log_it(moe::LocalLog & lLog) override;
 	

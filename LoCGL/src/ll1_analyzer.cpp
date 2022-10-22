@@ -4,7 +4,6 @@
 namespace ll1 {
 
 void LL1Analyzer::get_first() {
-	analyze_epsilon_reachable();
 	auto changed = false;
 	auto vNonT = vocabulary;
 	for (auto & x: vocabulary) {
@@ -160,12 +159,16 @@ std::set<std::string> LL1Analyzer::first_of(const std::vector<std::string> & ite
 	auto res = std::set<std::string>();
 	auto brk = false;
 	for (auto & item: items) {
-		auto tmp = first[item];
-		tmp.erase(gra::epsilon);
-		res.insert(tmp.begin(), tmp.end());
-		if (!first[item].count(gra::epsilon)) {
-			brk = true;
-			break;
+		if (item == gra::epsilon) {
+		
+		}else{
+			auto tmp = first[item];
+			tmp.erase(gra::epsilon);
+			res.insert(tmp.begin(), tmp.end());
+			if (!first[item].count(gra::epsilon)) {
+				brk = true;
+				break;
+			}
 		}
 	}
 	if (!brk) {
@@ -310,5 +313,11 @@ LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view pars
 	    << std::endl << std::endl;
 	
 	ofs << "}" << std::endl;
+}
+
+void LL1Analyzer::analyze() {
+	analyze_epsilon_reachable();
+	get_first();
+	get_follow();
 }
 }

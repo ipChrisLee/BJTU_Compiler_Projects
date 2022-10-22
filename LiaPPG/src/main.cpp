@@ -99,8 +99,7 @@ int main(int argc, char ** argv) {
 		}()
 	);
 	auto analyzerLogger = moe_llog("logs/liappg/analyzer.txt", " ", true, "//");
-	analyzer.get_first();
-	analyzer.get_follow();
+	analyzer.analyze();
 	analyzer.log_it(analyzerLogger);
 	analyzer
 		.to_ll1_parser_info(ppgInfo.parserFilePathToGen, ppgInfo.nameOfParser.value());
