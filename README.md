@@ -8,6 +8,8 @@
 git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
 ```
 
+目前在本地测试的时候，上述克隆语句在克隆到moe库的时候有概率G。。。如果您也发现了这个问题并且知道如何解决的话并且愿意告知我的话，我会非常感激！
+
 
 
 # 项目组成
@@ -38,7 +40,19 @@ git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
 	
 * 基于LL(1)的递归下降的语法分析器生成器LiaPPG（LiaPPG is another Predictive LL1Parser Generator）
   
-	* TBD.
+	* 怎么润Demo：
+	
+	  ```shell
+	  cd Compiler_Projects # 进入项目主目录
+	  demo/demo_ppg/run_demo_ppg.sh
+	  ```
+	
+	* demo里各个文件的作用
+	
+	  * `LL.lialex`和`LL.liagra`：一般的乘加表达式的词法语法。
+	  * `LL_with_literal.lialex`和`LL_with_literal.liagra`：增加了整数字面量的乘加表达式词法语法。
+	  * `src.LL`：编译器接受的源文件。
+	  * `ast.dot`：生成的表达式树存放文件。
 	
 * To be done.
 
