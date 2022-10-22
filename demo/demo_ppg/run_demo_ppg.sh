@@ -19,7 +19,9 @@ liappg_exe=${cmake_folder}/LiaPPG/LiaPPG
 this_demo_path=demo/demo_ppg
 
 lialex_file=${this_demo_path}/LL.lialex
+#lialex_file=${this_demo_path}/LL_with_literal.lialex
 liappg_file=${this_demo_path}/LL.liagra
+#liappg_file=${this_demo_path}/LL_with_literal.liagra
 target_lexer_info_hpp=${this_demo_path}/src/ll_lexer_info.hpp
 target_parser_info_hpp=${this_demo_path}/src/ll_parser_info.hpp
 lexer_info_name=ll_lexer_info
@@ -38,4 +40,5 @@ ${liappg_exe} --lex ${lialex_file} --gra ${liappg_file} --name ${parser_info_nam
 cd ${cmake_folder} && make demo_ppg && cd ..
 
 # run this demo. stdin is source file. stdout is dest file(a dot file represents ast).
-${this_demo_exe} <${this_demo_src} >${this_demo_dst} 2>/dev/null
+${this_demo_exe} <${this_demo_src} >${this_demo_dst}
+echo $?

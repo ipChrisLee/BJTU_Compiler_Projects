@@ -27,10 +27,10 @@ int main() {
 		ll_lexer_info::tokensToBeThrown,
 	};
 	auto lexerTokens = lexer.gen(src);
-	for (auto & token: lexerTokens) {
-		std::cerr << ll_lexer_info::get_token_type_name(token.tokenType) << ": "
-		          << token.content << std::endl;
-	}
+//	for (auto & token: lexerTokens) {
+//		std::cerr << ll_lexer_info::get_token_type_name(token.tokenType) << ": "
+//		          << token.content << std::endl;
+//	}
 	auto tokenFileStr = std::string();
 	for (auto & lexerToken: lexerTokens) {
 		tokenFileStr += lexerToken.print_to_parser(ll_lexer_info::get_token_type_name);
