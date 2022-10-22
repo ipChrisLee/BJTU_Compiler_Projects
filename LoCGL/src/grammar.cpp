@@ -75,9 +75,9 @@ void Gra::log_it(moe::LocalLog & lLog) {
 
 const std::string startStateName = "CompUnit";
 
-const std::string epsilon = "$";
+const std::string epsilon = "_epsilon";
 
-const std::string endLabel = "#";
+const std::string endLabel = "_end";
 
 }
 

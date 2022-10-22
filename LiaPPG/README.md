@@ -1,1 +1,1 @@
-# LiaPPG is another Predictive Parser Generator
+# LiaPPG is another Predictive LL1Parser Generator

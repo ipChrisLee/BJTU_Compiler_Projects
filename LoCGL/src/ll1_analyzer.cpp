@@ -158,9 +158,8 @@ void LL1Analyzer::log_it(moe::LocalLog & lLog) {
 std::set<std::string> LL1Analyzer::first_of(const std::vector<std::string> & items) {
 //	moe_dbg(items);
 	auto res = std::set<std::string>();
-	auto itemSet = std::set<std::string>(items.begin(), items.end());
 	auto brk = false;
-	for (auto & item: itemSet) {
+	for (auto & item: items) {
 		auto tmp = first[item];
 		tmp.erase(gra::epsilon);
 		res.insert(tmp.begin(), tmp.end());
@@ -174,5 +173,142 @@ std::set<std::string> LL1Analyzer::first_of(const std::vector<std::string> & ite
 	}
 //	moe_dbg(res);
 	return res;
+}
+
+void
+LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view parserName) {
+	auto ofs = std::ofstream(filePath);
+	//  head
+	ofs << "#pragma once" << std::endl;
+	ofs << "#include <map>" << std::endl;
+	ofs << "#include <vector>" << std::endl;
+	ofs << "#include <iostream>" << std::endl;
+	ofs << std::endl << std::endl << std::endl;
+	ofs << "namespace " << parserName << "{" << std::endl;
+	
+	//  Parser rule type
+	ofs << "enum class RuleType {" << std::endl;
+	for (auto & v: vocabulary) {
+		ofs << "\t" << v << "," << std::endl;
+	}
+	ofs << "\t" << gra::epsilon << "," << std::endl;
+	ofs << "\t" << gra::endLabel << "," << std::endl;
+	ofs << "};" << std::endl << std::endl;
+	// Parser rule type finished.
+	
+	//  strToRuleType function
+	ofs << "static RuleType strToRuleType(std::string_view str) {" << std::endl;
+	ofs << "\tif (str.empty()) {" << std::endl;
+	ofs << "\t\tstd::cerr << \"Input string is empty!\" << std::endl;" << std::endl;
+	ofs << "\t\texit(-1);" << std::endl;
+	ofs << "\t}";
+	for (auto & v: vocabulary) {
+		ofs << " else if (str == \"" << v << "\") {" << std::endl;
+		ofs << "\t\treturn RuleType::" << v << ";" << std::endl;
+		ofs << "\t}";
+	}
+	ofs << " else if (str == \"" << gra::epsilon << "\") {" << std::endl;
+	ofs << "\t\treturn RuleType::" << gra::epsilon << ";" << std::endl;
+	ofs << "\t}";
+	ofs << " else if (str == \"" << gra::endLabel << "\") {" << std::endl;
+	ofs << "\t\treturn RuleType::" << gra::endLabel << ";" << std::endl;
+	ofs << "\t}";
+	ofs << " else {" << std::endl;
+	ofs << "\t\tstd::cerr << \"Unknown rule type.\" << std::endl;" << std::endl;
+	ofs << "\t\texit(-1);" << std::endl;
+	ofs << "\t}";
+	ofs << std::endl;
+	ofs << "}" << std::endl << std::endl;
+	//  strToRuleType function end.
+	
+	//  ruleTypeToStr function
+	ofs << "static std::string ruleTypeToStr(RuleType ruleType) {" << std::endl;
+	ofs << "\tif (0) {" << std::endl;
+	ofs << "\t}";
+	for (auto & v: vocabulary) {
+		ofs << " else if (ruleType == RuleType::" << v << ") {" << std::endl;
+		ofs << "\t\treturn \"" << v << "\";" << std::endl;
+		ofs << "\t}";
+	}
+	ofs << " else if (ruleType == RuleType::" << gra::epsilon << ") {" << std::endl;
+	ofs << "\t\treturn \"" << gra::epsilon << "\";" << std::endl;
+	ofs << "\t}";
+	ofs << " else if (ruleType == RuleType::" << gra::endLabel << ") {" << std::endl;
+	ofs << "\t\treturn \"" << gra::endLabel << "\";" << std::endl;
+	ofs << "\t}";
+	ofs << " else {" << std::endl;
+	ofs << "\t\tstd::cerr << \"Unknown rule type.\" << std::endl;" << std::endl;
+	ofs << "\t\texit(-1);" << std::endl;
+	ofs << "\t}";
+	ofs << std::endl;
+	ofs << "}" << std::endl;
+	//  strToRuleType function end.
+	
+	//  allRules
+	ofs << "static const std::map<RuleType, std::vector<std::vector<RuleType>>> allRules{"
+	    << std::endl;
+	for (auto & rule: allRules) {
+		auto & left = rule.first;
+		ofs << "\t" << "{RuleType::" << left << ", {";
+		for (auto & right: rule.second) {
+			ofs << "{";
+			for (auto & v: right) {
+				ofs << "RuleType::" << v << ", ";
+			}
+			ofs << "}, ";
+		}
+		ofs << "}}," << std::endl;
+	}
+	ofs << "};" << std::endl << std::endl;
+	//  allRules end.
+	
+	//  first
+	ofs << "static const std::map<RuleType, std::set<RuleType>> first{" << std::endl;
+	for (auto & pa: first) {
+		auto & left = pa.first;
+		ofs << "\t{RuleType::" << left << ", {";
+		for (auto & item: pa.second) {
+			ofs << "RuleType::" << item << ", ";
+		}
+		ofs << "}}," << std::endl;
+	}
+	ofs << "};" << std::endl << std::endl;
+	//  first end.
+	
+	//  follow
+	ofs << "static const std::map<RuleType, std::set<RuleType>> follow{" << std::endl;
+	for (auto & pa: follow) {
+		auto & left = pa.first;
+		ofs << "\t{RuleType::" << left << ", {";
+		for (auto & item: pa.second) {
+			ofs << "RuleType::" << item << ", ";
+		}
+		ofs << "}}," << std::endl;
+	}
+	ofs << "};" << std::endl << std::endl;
+	//  follow end.
+	
+	//  term
+	ofs << "static const std::set<RuleType> terms{" << std::endl;
+	for (auto & pa: isTerm) {
+		if (pa.second) {
+			ofs << "\tRuleType::" << pa.first << "," << std::endl;
+		}
+	}
+	ofs << "};" << std::endl << std::endl;
+	//  term end.
+	
+	
+	//  start rule
+	ofs << "static const RuleType start = RuleType::" << gra::startStateName << ";"
+	    << std::endl << std::endl;
+	//  end rule
+	ofs << "static const RuleType end = RuleType::" << gra::endLabel << ";" << std::endl
+	    << std::endl;
+	//  epsilon rule
+	ofs << "static const RuleType epsilon = RuleType::" << gra::epsilon << ";"
+	    << std::endl << std::endl;
+	
+	ofs << "}" << std::endl;
 }
 }

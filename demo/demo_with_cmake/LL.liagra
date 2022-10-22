@@ -1,10 +1,10 @@
 CompUnit -> V Eq E
 E -> T E_
 E_ -> A T E_
-	| $
+	| _epsilon
 T -> F T_
 T_ -> M F T_
-	| $
+	| _epsilon
 F -> LParen E RParen
 	| I
 V -> I

@@ -6,12 +6,36 @@ if [ "${root_judgement}" != "project(Compiler_Projects)" ]; then
 fi
 
 cmake_folder=cmake-build-debug
+# cmake
+mkdir -p "${cmake_folder}"
+cmake -B "${cmake_folder}" -G "Unix Makefiles"
+# build lialex and liappg
+cd ${cmake_folder} && make LiaLEX && cd ..
+cd ${cmake_folder} && make LiaPPG && cd ..
+
 lialex_exe=${cmake_folder}/LiaLEX/LiaLEX
+liappg_exe=${cmake_folder}/LiaPPG/LiaPPG
 
 this_demo_path=demo/demo_with_cmake
 
 lialex_file=${this_demo_path}/LL.lialex
-target_lialex_hpp=${this_demo_path}/src/LL_Lexer.hpp
-lex_name=ll_lex
+liappg_file=${this_demo_path}/LL.liagra
+target_lexer_info_hpp=${this_demo_path}/src/ll_lexer_info.hpp
+target_parser_info_hpp=${this_demo_path}/src/ll_parser_info.hpp
+lexer_info_name=ll_lexer_info
+parser_info_name=ll_parser_info
 
-${lialex_exe} --lex ${lialex_file} -o ${target_lialex_hpp} --name ${lex_name}
+this_demo_exe=${cmake_folder}/demo/demo_with_cmake/demo_with_cmake
+this_demo_src=${this_demo_path}/src.LL
+this_demo_dst=${this_demo_path}/dst.dot
+
+# generate lexer and parser info
+${lialex_exe} --lex ${lialex_file} -o ${target_lexer_info_hpp} --name ${lexer_info_name}
+${liappg_exe} --lex ${lialex_file} --gra ${liappg_file} --name ${parser_info_name} \
+  --dest ${target_parser_info_hpp}
+
+# make demo
+cd ${cmake_folder} && make demo_with_cmake && cd ..
+
+# run this demo. stdin is source file. stdout is dest file(a dot file represents ast).
+${this_demo_exe} <${this_demo_src} >${this_demo_dst} 2>/dev/null

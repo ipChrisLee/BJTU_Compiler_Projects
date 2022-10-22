@@ -22,7 +22,7 @@
 	
 	     `main.cpp`里include了`B.hpp`和`$proj_root/runtime_lib/lialex_runtime`两个文件。
 	
-* 基于LL(1)的递归下降的语法分析器生成器LiaPPG（LiaPPG is another Predictive Parser Generator）
+* 基于LL(1)的递归下降的语法分析器生成器LiaPPG（LiaPPG is another Predictive LL1Parser Generator）
   
 	* TBD.
 	
@@ -37,7 +37,7 @@
 ├── CMakeLists.txt      项目根CMake文件。
 ├── LICENSE.md          本项目的LICENSE。
 ├── LiaLEX              LiaLEX（LiaLEX is another LEX）项目根目录。
-├── LiaPPG              LiaPPG（LiaPPG is another Predictive Parser Generator）项目根目录。
+├── LiaPPG              LiaPPG（LiaPPG is another Predictive LL1Parser Generator）项目根目录。
 ├── LoCGL               LoCGL（Lots of Compiler Generator Libraries）项目根目录。
 ├── README.md           本文件。
 ├── demo                所有的demo项目都在此。

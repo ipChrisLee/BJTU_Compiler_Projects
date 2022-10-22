@@ -36,6 +36,8 @@ struct LL1Analyzer : gra::Gra { //  LL(1) analyzer
 	
 	void log_it(moe::LocalLog & lLog) override;
 	
+	void to_ll1_parser_info(std::string_view filePath, std::string_view parserName);
+	
 };
 
 }
