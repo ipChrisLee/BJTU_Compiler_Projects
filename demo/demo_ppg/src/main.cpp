@@ -45,6 +45,8 @@ int main() {
 		ll_parser_info::start,
 		ll_parser_info::end,
 		ll_parser_info::epsilon,
+		ll_parser_info::table,
+		ll_parser_info::ruleTypeToStr,
 	};
 //	{
 //		auto tmp = parser.first_of({ll_parser_info::RuleType(7)});
@@ -59,9 +61,16 @@ int main() {
 //	for (auto & rule: parserRules) {
 //		std::cout << rule.content << std::endl;
 //	}
-	auto pASTRoot = parser.parse_with_pp(parserRules);
+
+//	auto pASTRoot = parser.parse_with_pp(parserRules);
+//	std::cout << "digraph ast{" << std::endl;
+//	std::cout << pASTRoot->to_dot(ll_parser_info::ruleTypeToStr) << std::endl;
+//	std::cout << "}" << std::endl;
+	
+	auto pASTRoot = parser.parse_with_table(parserRules);
 	std::cout << "digraph ast{" << std::endl;
 	std::cout << pASTRoot->to_dot(ll_parser_info::ruleTypeToStr) << std::endl;
 	std::cout << "}" << std::endl;
+	
 	return 0;
 }
