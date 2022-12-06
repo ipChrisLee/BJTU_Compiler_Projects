@@ -15,6 +15,7 @@ add_library(
 		LoCGL SHARED
 		src/ll1_analyzer.cpp
 		src/grammar.cpp
-)
+		src/slr1_analyzer.cpp
+		src/grammar_plus.cpp)
 target_link_libraries(LoCGL moe)
 

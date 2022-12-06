@@ -1,19 +1,21 @@
 #pragma once
 
+
 #include <set>
-#include <string>
 #include <map>
-#include <vector>
+#include <string>
 
 #include <moe/log.hpp>
 
-
 namespace gra { //  grammar
 
-struct Gra {
+struct GraP {
 	std::set<std::string> vocabulary;
-	std::map<std::string, bool> isTerm; //  is terminator
-	std::map<std::string, std::vector<std::vector<std::string>>> allRules;
+	std::map<std::string, bool> isTerm; //  is terminator. endLabel is not terminator!
+	std::map<std::string, std::map<std::string, std::vector<std::string>>> allRules;
+	//  allRules[A][B][C] : A -> C % B
+	std::map<std::pair<std::string, std::vector<std::string>>, std::string> ruleToName;
+	//  ruleDef[A][C] : A.first -> A.second % C
 	
 	void read_gra(std::string_view src);
 	
@@ -31,4 +33,3 @@ extern const std::string endLabel;
 extern const std::string dot;
 
 }
-

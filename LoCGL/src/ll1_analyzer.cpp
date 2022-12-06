@@ -161,7 +161,7 @@ std::set<std::string> LL1Analyzer::first_of(const std::vector<std::string> & ite
 	for (auto & item: items) {
 		if (item == gra::epsilon) {
 		
-		}else{
+		} else {
 			auto tmp = first[item];
 			tmp.erase(gra::epsilon);
 			res.insert(tmp.begin(), tmp.end());
@@ -178,6 +178,30 @@ std::set<std::string> LL1Analyzer::first_of(const std::vector<std::string> & ite
 	return res;
 }
 
+void LL1Analyzer::get_table() {
+	for (const auto & [A, leftRules]: allRules) {
+		for (const auto & yeta: leftRules) {
+			auto firstOfYeta = first_of(yeta);
+			auto followA = follow[A];
+			for (const auto & a: vocabulary) {
+				if (!isTerm[a]) {
+					continue;
+				}
+				if (firstOfYeta.count(a)) {
+					table[A][a] = std::make_pair(A, yeta);
+				}
+				if (firstOfYeta.count(gra::epsilon) && followA.count(a)) {
+					table[A][a] = std::make_pair(A, yeta);
+				}
+			}
+			if (firstOfYeta.count(gra::epsilon) && followA.count(gra::endLabel)) {
+				table[A][gra::endLabel] = std::make_pair(A, yeta);
+			}
+		}
+	}
+}
+
+
 void
 LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view parserName) {
 	auto ofs = std::ofstream(filePath);
@@ -186,6 +210,8 @@ LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view pars
 	ofs << "#include <map>" << std::endl;
 	ofs << "#include <vector>" << std::endl;
 	ofs << "#include <iostream>" << std::endl;
+	ofs << "#include <set>" << std::endl;
+	ofs << "#include <utility>" << std::endl;
 	ofs << std::endl << std::endl << std::endl;
 	ofs << "namespace " << parserName << "{" << std::endl;
 	
@@ -291,6 +317,37 @@ LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view pars
 	ofs << "};" << std::endl << std::endl;
 	//  follow end.
 	
+	//  table
+	ofs << "static const std::map<\n"
+	    << "\tRuleType, std::map<RuleType, std::pair<RuleType, std::vector<RuleType>>>\n"
+	    << "> table{"
+	    << std::endl;
+	for (const auto & [left, row]: table) {
+		//  one element of std::map<..., ...>
+		ofs << "\t{";
+		ofs << "RuleType::" << left << ", ";
+		//  std::map<..., ...>
+		ofs << "{";
+		for (const auto & [right, rule]: row) {
+			//  one element of std::map<..., ...>
+			ofs << "{";
+			ofs << "RuleType::" << right << ", ";
+			//  std::pair<..., ...>
+			ofs << "{";
+			//  first element of std::pair
+			ofs << "RuleType::" << rule.first << ", {";
+			//  second element of std::pair, std::vector<...>
+			for (const auto & a: rule.second) {
+				ofs << "RuleType::" << a << ", ";
+			}
+			ofs << "}}, ";
+			ofs << "}, ";
+		}
+		ofs << "}}," << std::endl;
+	}
+	ofs << "};" << std::endl << std::endl;
+	//  table end.
+	
 	//  term
 	ofs << "static const std::set<RuleType> terms{" << std::endl;
 	for (auto & pa: isTerm) {
@@ -300,7 +357,6 @@ LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view pars
 	}
 	ofs << "};" << std::endl << std::endl;
 	//  term end.
-	
 	
 	//  start rule
 	ofs << "static const RuleType start = RuleType::" << gra::startStateName << ";"
@@ -312,6 +368,7 @@ LL1Analyzer::to_ll1_parser_info(std::string_view filePath, std::string_view pars
 	ofs << "static const RuleType epsilon = RuleType::" << gra::epsilon << ";"
 	    << std::endl << std::endl;
 	
+	
 	ofs << "}" << std::endl;
 }
 
@@ -319,5 +376,7 @@ void LL1Analyzer::analyze() {
 	analyze_epsilon_reachable();
 	get_first();
 	get_follow();
+	get_table();
 }
+
 }

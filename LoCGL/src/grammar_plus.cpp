@@ -1,11 +1,10 @@
+#include "grammar_plus.hpp"
+
 #include <moe/stl_pro.hpp>
-
-#include "grammar.hpp"
-
 
 namespace gra {
 
-void Gra::read_gra(std::string_view src) {
+void GraP::read_gra(std::string_view src) {
 	auto preRule = std::string();
 	auto lines = moe::split_string_on_char(src, "\n");
 	for (auto & line: lines) {
@@ -27,14 +26,21 @@ void Gra::read_gra(std::string_view src) {
 		}
 		moe_assert(i32(ruleItems.size()) > idx, "Error!");
 		for (; idx < i32(ruleItems.size()); ++idx) {
+			if (ruleItems[idx] == "%") {
+				break;
+			}
 			ruleDef.emplace_back(ruleItems[idx]);
 		}
-		allRules[preRule].emplace_back(std::move(ruleDef));
+		moe_assert(ruleItems[idx] == "%");
+		moe_assert(i32(ruleItems.size()) == idx + 2);
+		auto parseRuleName = ruleItems[idx + 1];
+		allRules[preRule].emplace(std::make_pair(parseRuleName, ruleDef));
+		ruleToName[std::make_pair(preRule, ruleDef)] = parseRuleName;
 		vocabulary.insert(preRule);
 	}
 }
 
-void Gra::read_lex(std::string_view src) {
+void GraP::read_lex(std::string_view src) {
 	auto lines = moe::split_string_on_char(src, "\n");
 	for (auto & line: lines) {
 //		moe_slog_info(line);
@@ -44,9 +50,10 @@ void Gra::read_lex(std::string_view src) {
 			vocabulary.insert(ruleDef[1]);
 		}
 	}
+	moe_assert(allRules[startStateName].size() == 1);
 }
 
-void Gra::log_it(moe::LocalLog & lLog) {
+void GraP::log_it(moe::LocalLog & lLog) {
 	{
 		lLog.info("Vocabulary:");
 		moe_r_set(lLog.indent, lLog.indent + 1);
@@ -63,23 +70,16 @@ void Gra::log_it(moe::LocalLog & lLog) {
 			moe_r_set(lLog.indent, lLog.indent + 1);
 			for (auto & right: rule.second) {
 				auto buf = std::string();
-				for (auto & item: right) {
+				for (auto & item: right.second) {
 					buf += item;
 					buf.push_back(' ');
 				}
+				buf += "% ";
+				buf += right.first;
 				lLog.info(buf);
 			}
 		}
 	}
 }
 
-const std::string startStateName = "CompUnit";
-
-const std::string epsilon = "_epsilon";
-
-const std::string endLabel = "_end";
-
-const std::string dot = "_dot";
-
 }
-

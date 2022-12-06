@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <map>
 #include <string>
 #include <vector>
@@ -34,6 +35,12 @@ struct LL1Analyzer : gra::Gra { //  LL(1) analyzer
 	void get_first();
 	
 	void get_follow();
+	
+	
+	std::map<
+		std::string, std::map<std::string, std::pair<std::string, std::vector<std::string>>>
+	> table;
+	void get_table();
   
   public:
 	void analyze();

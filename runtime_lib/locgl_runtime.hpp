@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <cstdint>
 #include <string>
 #include <memory>
@@ -10,6 +11,9 @@
 #include <string_view>
 #include <functional>
 #include <charconv>
+#include <stack>
+#include <moe/rt_check.hpp>
+#include <moe/debugger.hpp>
 
 #include "general_ast.hpp"
 
@@ -61,6 +65,7 @@ struct Rule {
 	Rule(Rule &&) noexcept = default;
 };
 
+
 template<typename RuleType>
 struct LL1Parser {
 	std::map<RuleType, std::vector<std::vector<RuleType>>> allRules;
@@ -69,6 +74,10 @@ struct LL1Parser {
 	RuleType start;    //  CompUnit
 	RuleType end;      //  # or _end
 	RuleType epsilon;  //   $ or _epsilon
+	std::map<
+		RuleType, std::map<RuleType, std::pair<RuleType, std::vector<RuleType>>>
+	> table;
+	std::function<std::string(RuleType)> ruleTypeToStr;
 	
 	std::set<RuleType> first_of(const std::vector<RuleType> & items) {
 		auto res = std::set<RuleType>();
@@ -189,5 +198,198 @@ struct LL1Parser {
 		return res;
 	}
 	
+	std::shared_ptr<gast::ASTNode<RuleType>>
+	parse_with_table(std::vector<Rule<RuleType>> items) {
+		//  parse with predictive parse(递归下降法)
+		//  root of the ast
+		auto root = std::make_shared<gast::ASTNode<RuleType>>(
+			start, "",
+			std::vector<std::shared_ptr<gast::ASTNode<RuleType>>>(),
+			std::weak_ptr<gast::ASTNode<RuleType>>()
+		);
+		//  余留输入栈
+		auto resStack = std::stack<Rule<RuleType>>();
+		resStack.push(Rule<RuleType>(end, ""));
+		std::for_each(
+			items.rbegin(), items.rend(), [&resStack](const Rule<RuleType> & r) {
+				resStack.push(r);
+			}
+		);
+		//  分析栈初始化
+		auto anaStack
+			= std::stack<
+				std::pair<RuleType, std::shared_ptr<gast::ASTNode<RuleType>>>
+			>();
+		anaStack.push(std::make_pair(end, nullptr));
+		anaStack.push(std::make_pair(start, root));
+		//  Let's go.
+		while (!anaStack.empty()) {
+			auto anaTopRuleType = anaStack.top().first;
+			auto now = anaStack.top().second;
+			auto resTopRule = resStack.top();
+			anaStack.pop();
+//			moe_dbg("-------");
+//			moe_dbg(ruleTypeToStr(anaTopRuleType));
+//			moe_dbg(ruleTypeToStr(resTopRule.ruleType));
+			if (anaTopRuleType == end) {
+				moe_assert(resTopRule.ruleType == end);
+				resStack.pop();
+				break;
+			} else if (anaTopRuleType == resTopRule.ruleType) {
+				moe_assert(terms.count(anaTopRuleType));
+				now->content = resTopRule.content;
+				resStack.pop();
+				continue;
+			} else {
+				moe_assert(
+					!terms.count(anaTopRuleType) && (
+						terms.count(resTopRule.ruleType) || resTopRule.ruleType == end
+					));
+				moe_assert(table[anaTopRuleType].count(resTopRule.ruleType));
+				auto yeta = table[anaTopRuleType][resTopRule.ruleType].second;
+				std::for_each(
+					yeta.rbegin(), yeta.rend(),
+					[&anaStack, &now, this](const RuleType & ruleType) {
+						auto son = std::make_shared<gast::ASTNode<RuleType>>(
+							ruleType, "",
+							std::vector<std::shared_ptr<gast::ASTNode<RuleType>>>(),
+							std::weak_ptr<gast::ASTNode<RuleType>>(now)
+						);
+						now->sons.insert(now->sons.begin(), son);
+						if (ruleType != epsilon) {
+							anaStack.template emplace(ruleType, son);
+						}
+					}
+				);
+			}
+		}
+		return root;
+	}
+};
+
+
+}
+namespace locgl_slr1_runtime {
+template<typename RuleType> using Rule = locgl_ll1_runtime::Rule<RuleType>;
+using NodeID_t = uint64_t;
+
+template<typename RuleType, typename ParseType>
+struct SLR1Parser {
+	static_assert(std::is_enum<RuleType>::value && std::is_enum<ParseType>::value);
+	
+	std::map<NodeID_t, std::map<RuleType, ParseType>> actionTableR; //  r
+	std::map<NodeID_t, std::map<RuleType, NodeID_t>> actionTableS;  //  s
+	std::map<NodeID_t, std::map<RuleType, NodeID_t>> actionTableG;  //  goto
+	NodeID_t start;
+	
+	RuleType startRule;
+	RuleType endRule;
+	
+	ParseType theFirstParseType;
+	
+	std::map<ParseType, std::pair<RuleType, std::vector<RuleType>>> parseTypeToRule;
+	
+	std::function<std::string(RuleType)> ruleTypeToStr;
+	std::function<std::string(ParseType)> parseTypeToStr;
+	
+	[[nodiscard]] bool is_legal() const {
+		for (auto & [u, uEdgesInR]: actionTableR) {
+			auto vInR = std::set<RuleType>();
+			std::for_each(
+				uEdgesInR.begin(), uEdgesInR.end(), [&vInR](const auto & p) {
+					vInR.insert(p.first);
+				}
+			);
+			if (actionTableS.count(u)) {
+				for (auto & [v, _]: actionTableS.find(u)->second) {
+					if (vInR.count(v)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	static std::vector<Rule<RuleType>>
+	gen_from_str(
+		std::string_view src, std::function<RuleType(std::string_view)> strToRuleType
+	) {
+		using namespace std::string_view_literals;
+		auto res = std::vector<Rule<RuleType>>();
+		auto posStart = std::string_view::size_type(0);
+		while (posStart < src.size()) {
+			auto iFirstDel = src.size();
+			for (auto ch: "\n"sv) {
+				auto i = src.find(ch, posStart);
+				if (i != std::string_view::npos) {
+					iFirstDel = std::min(iFirstDel, i);
+				}
+			}
+			if (iFirstDel > posStart) {
+				res.emplace_back(
+					src.substr(posStart, iFirstDel - posStart), strToRuleType
+				);
+			}
+			posStart = iFirstDel + 1;
+		}
+		return res;
+	}
+	
+	std::shared_ptr<gast::ASTNodeWithInfo<RuleType, ParseType>>
+	parse_with_table(std::vector<Rule<RuleType>> items) {
+		//  parse with predictive parse(递归下降法)
+		//  root of the ast
+		using ASTNodeW = gast::ASTNodeWithInfo<RuleType, ParseType>;
+#define mk_node(...) std::make_shared<ASTNodeW>(__VA_ARGS__)
+#define empty_son_fa std::vector<std::shared_ptr<ASTNodeW>>(), std::weak_ptr<ASTNodeW>()
+		auto stateStack = std::stack<NodeID_t>();   //  state stack
+		auto astNodeStack = std::stack<std::shared_ptr<ASTNodeW>>();    //  symbol stack
+		stateStack.emplace(start);
+		auto it = items.begin();
+		while (it != items.end()) {
+			auto stateTop = stateStack.top();
+			auto inputRuleType = it->ruleType;
+			if (actionTableS[stateTop].count(inputRuleType)) {
+				auto nxtState = actionTableS[stateTop][inputRuleType];
+				stateStack.emplace(nxtState);
+				astNodeStack.emplace(
+					mk_node(inputRuleType, it->content, empty_son_fa)
+				);
+				++it;
+			} else if (actionTableR[stateTop].count(inputRuleType)) {
+				auto parseType = actionTableR[stateTop][inputRuleType];
+				auto & ruleUsing = parseTypeToRule[parseType];
+				auto rootOfSubTree = mk_node(ruleUsing.first, "", empty_son_fa, parseType);
+				auto sz = parseTypeToRule[parseType].second.size();
+				while (sz--) {
+					stateStack.pop();
+					auto pSon = astNodeStack.top();
+					astNodeStack.pop();
+					rootOfSubTree->sons.emplace(rootOfSubTree->sons.begin(), pSon);
+					pSon->fa = rootOfSubTree;
+					moe_assert(ruleUsing.second[sz] == pSon->ruleType);
+				}
+				stateTop = stateStack.top();
+				if (actionTableG[stateTop].count(ruleUsing.first)) {
+					auto nxtState = actionTableG[stateTop][ruleUsing.first];
+					stateStack.emplace(nxtState);
+					astNodeStack.emplace(rootOfSubTree);
+				} else {
+					moe_panic("");
+				}
+			} else {
+				moe_panic("");
+			}
+		}
+		auto root = mk_node(startRule, "", empty_son_fa, theFirstParseType);
+		while (!astNodeStack.empty()) {
+			auto son = astNodeStack.top();
+			astNodeStack.pop();
+			root->sons.emplace(root->sons.begin(), son);
+		}
+		return root;
+#undef mk_node
+	}
 };
 }
