@@ -1,3 +1,4 @@
 [submodule "moe"]
 	path = moe
 	url = https://github.com/ipChrisLee/moe.git
+	branch = KousakaReina-1.0.0
