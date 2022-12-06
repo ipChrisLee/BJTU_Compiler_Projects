@@ -13,5 +13,7 @@ include_directories(./moe)
 
 add_subdirectory(./LiaLEX)
 add_subdirectory(./LiaPPG)
+add_subdirectory(./LiaSPG)
 add_subdirectory(./LoCGL)
 add_subdirectory(demo/demo_ppg)
+add_subdirectory(demo/demo_spg)

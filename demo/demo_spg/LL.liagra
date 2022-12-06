@@ -1,0 +1,8 @@
+CompUnit -> V eq E      % eq_stmt
+E ->    E a T           % exp_add
+	|   T               % exp_to_t
+T ->    T m F           % exp_mul
+	|   F               % exp_to_f
+F -> lParen E rParen    % exp_f
+	|   i               % exp_i
+V -> i                  % eq_left

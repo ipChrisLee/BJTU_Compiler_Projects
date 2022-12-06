@@ -1,0 +1,11 @@
+- lowerLetter = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+- upperLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z'
+- letter = &lowerLetter | &upperLetter
++ i = &letter ~ &letter *
++ a = '+' | '-'
++ m = '*' | '/'
++ eq = '='
++ lParen = '('
++ rParen = ')'
+- ws = '\s' | '\n' | '\t' | '\r'
+@ wsStr = &ws ~ &ws *
