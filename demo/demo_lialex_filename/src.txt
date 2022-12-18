@@ -1,0 +1,2 @@
+a.txt root:b.txt    c.c
+d x:y root:a.txt

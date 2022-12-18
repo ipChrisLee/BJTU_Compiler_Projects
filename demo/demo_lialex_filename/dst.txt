@@ -1,0 +1,6 @@
+filename: a.txt
+filename: root:b.txt
+filename: c.c
+filename: d
+filename: x:y
+filename: root:a.txt

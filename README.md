@@ -23,7 +23,10 @@ git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
 	  demo/demo_lialex/run_demo_lialex.sh
 	  ```
 	  
+	* 另外一个demo是第三章补充题的，可以识别文件名。
+		
 	* demo里各个文件的作用：
+		
 		* `B.lialex`：定义了B语言的词法。
 		* `B.hpp`：lialex生成的头文件。
 		* `main.cpp`：demo处理函数。
