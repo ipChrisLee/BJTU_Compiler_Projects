@@ -1,0 +1,4 @@
+CompUnit -> S           % comp_unit
+S -> a S                % S_aS
+   | b S                % S_bS
+   | a                  % S_a
