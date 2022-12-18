@@ -1,0 +1,8 @@
++ BeginStmt = 'b' ~ 'e' ~ 'g' ~ 'i' ~ 'n'
++ EndStmt = 'e' ~ 'n' ~ 'd'
++ ChD = 'd'
++ ChS = 's'
++ ChSep = ';'
+/
+- WS = '\s' | '\n' | '\t' | '\r'
+@ WS_Str = &WS ~ &WS *
