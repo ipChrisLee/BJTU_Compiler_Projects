@@ -25,6 +25,13 @@ git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
 	  
 	* 另外一个demo是第三章补充题的，可以识别文件名。
 		
+		```shell
+		cd Compiler_Projects # 进入项目主目录
+		demo/demo_lialex_filename/run_demo_lialex.sh
+		```
+		
+		具体demo的运行行为可以参考脚本文件，简单来说就是，程序会读取在demo/demo_lialex_filename下的src.txt，并结合自动生成的lexer程序，获得分割后的一系列文件名，并存入dst.txt。
+		
 	* demo里各个文件的作用：
 		
 		* `B.lialex`：定义了B语言的词法。
@@ -50,6 +57,13 @@ git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
 	  demo/demo_ppg/run_demo_ppg.sh
 	  ```
 	
+	* 另外一个demo是第四章4-3题编程作业，原题要画出程序框图，这里直接把输入src.txt变成了AST的形式，存在ast.dot中。
+	
+	  ```shell
+	  cd Compiler_Projects # 进入项目主目录
+	  demo/demo_ppg_hw/run_demo_ppg.sh
+	  ```
+	  
 	* demo里各个文件的作用
 	
 	  * `LL.lialex`和`LL.liagra`：一般的乘加表达式的词法语法。
@@ -57,9 +71,28 @@ git clone https://github.com/ipChrisLee/BJTU_Compiler_Projects.git --recursive
 	  * `src.LL`：编译器接受的源文件。
 	  * `ast.dot`：生成的表达式树存放文件。
 	
-* To be done.
+* 基于SLR(1)的语法分析器生成器LiaSPG（LiaSPG is another Slr(1) Parser Generator）
 
+  * 怎么润Demo：
 
+    ```shell
+    cd Compiler_Projects # 进入项目主目录
+    demo/demo_spg/run_demo_spg.sh
+    ```
+
+  * 另一个demo是第四章补充题编程作业，原题要求构造分析表，这里把输入的src.txt生成的ast也输出出来了，存在ast.dot中。
+
+    ```shell
+    cd Compiler_Projects # 进入项目主目录
+    demo/demo_spg_hw/run_demo_spg.sh
+    ```
+
+  * demo里各个文件的作用
+
+    * `LL.lialex`和`LL.liagra`：一般的乘加表达式的词法语法。
+    * `LL_with_literal.lialex`和`LL_with_literal.liagra`：增加了整数字面量的乘加表达式词法语法。
+    * `src.LL`：编译器接受的源文件。
+    * `ast.dot`：生成的表达式树存放文件。
 
 # 文件架构
 
