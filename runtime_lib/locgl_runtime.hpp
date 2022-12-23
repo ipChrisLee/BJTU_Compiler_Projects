@@ -63,6 +63,7 @@ struct Rule {
 	Rule(const Rule &) = default;
 	
 	Rule(Rule &&) noexcept = default;
+	Rule & operator=(const Rule &) = default;
 };
 
 
@@ -80,7 +81,7 @@ struct LL1Parser {
 	std::function<std::string(RuleType)> ruleTypeToStr;
 	
 	std::set<RuleType> first_of(const std::vector<RuleType> & items) {
-		auto res = std::set<RuleType>();
+		auto res = std::set < RuleType > ();
 		auto brk = false;
 		for (auto & item: items) {
 			if (item == epsilon) {
@@ -281,6 +282,7 @@ struct SLR1Parser {
 	std::map<NodeID_t, std::map<RuleType, NodeID_t>> actionTableS;  //  s
 	std::map<NodeID_t, std::map<RuleType, NodeID_t>> actionTableG;  //  goto
 	NodeID_t start;
+	NodeID_t endNode;
 	
 	RuleType startRule;
 	RuleType endRule;
@@ -294,7 +296,7 @@ struct SLR1Parser {
 	
 	[[nodiscard]] bool is_legal() const {
 		for (auto & [u, uEdgesInR]: actionTableR) {
-			auto vInR = std::set<RuleType>();
+			auto vInR = std::set < RuleType > ();
 			std::for_each(
 				uEdgesInR.begin(), uEdgesInR.end(), [&vInR](const auto & p) {
 					vInR.insert(p.first);
@@ -346,10 +348,12 @@ struct SLR1Parser {
 		auto stateStack = std::stack<NodeID_t>();   //  state stack
 		auto astNodeStack = std::stack<std::shared_ptr<ASTNodeW>>();    //  symbol stack
 		stateStack.emplace(start);
+		items.emplace_back(Rule<RuleType>(endRule, ""));
 		auto it = items.begin();
 		while (it != items.end()) {
 			auto stateTop = stateStack.top();
 			auto inputRuleType = it->ruleType;
+//			moe_dbg(stateTop, ruleTypeToStr(inputRuleType));
 			if (actionTableS[stateTop].count(inputRuleType)) {
 				auto nxtState = actionTableS[stateTop][inputRuleType];
 				stateStack.emplace(nxtState);
@@ -378,6 +382,8 @@ struct SLR1Parser {
 				} else {
 					moe_panic("");
 				}
+			} else if (stateTop == endNode && inputRuleType == endRule) {
+				break;
 			} else {
 				moe_panic("");
 			}
@@ -390,6 +396,7 @@ struct SLR1Parser {
 		}
 		return root;
 #undef mk_node
+#undef empty_son_fa
 	}
 };
 }

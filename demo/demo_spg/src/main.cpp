@@ -42,6 +42,7 @@ int main() {
 		ll_parser_info::actionTableS,
 		ll_parser_info::actionTableG,
 		ll_parser_info::start,
+		ll_parser_info::end,
 		ll_parser_info::startRule,
 		ll_parser_info::endRule,
 		ll_parser_info::theFirstParseType,

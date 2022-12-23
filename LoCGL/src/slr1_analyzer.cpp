@@ -465,18 +465,38 @@ void SLR1Analyzer::to_slr1_parser_info(
 		}
 		//  actionTableR
 		{
+			auto vocabularyWithEnd = vocabulary;
+			vocabularyWithEnd.insert(gra::endLabel);
+			auto lLog = moe_llog("logs/liaspg/table_r_process.txt", " ", false, "//");
 			ofs << "static std::map<NodeID_t, std::map<RuleType, ParseType>> actionTableR = {"
 			    << std::endl;
 			for (auto & [id, content]: id2content) {
 				auto rRule = std::vector<std::string>();
 				auto thisA = std::string();
+				lLog.info(id);
+				moe_r_set(lLog.indent, lLog.indent + 1);
 				for (auto [A, yeta]: content.stmts) {
+					lLog.info(
+						A,
+						"->",
+						[](auto & _yeta) {
+							auto buf = std::string();
+							std::for_each(
+								_yeta.begin(), _yeta.end(), [&buf](auto s) {
+									buf += s + " ";
+								}
+							);
+							return buf;
+						}(yeta)
+					);
 					if (*yeta.rbegin() == gra::dot && A != gra::startStateName) {
 						yeta.pop_back();
 						thisA = A;
 						rRule.emplace_back(ruleToName[std::make_pair(std::move(A), std::move(yeta))]);
+						lLog.info("hit");
 					}
 				}
+				lLog.info("thisA =", thisA);
 				if (rRule.empty()) {
 					continue;
 				}
@@ -484,8 +504,9 @@ void SLR1Analyzer::to_slr1_parser_info(
 				moe_assert(!rRule.begin()->empty());
 				auto parseRuleName = *rRule.begin();
 				ofs << "\t{" << id << ", " << "{";
-				for (auto & a: vocabulary) {
-					if (isTerm[a] && follow[thisA].count(a)) {
+				for (auto & a: vocabularyWithEnd) {
+					lLog.info(a);
+					if ((isTerm[a] || a == gra::endLabel) && follow[thisA].count(a)) {
 						ofs << "{RuleType::" << a << ", ParseType::" << parseRuleName << "}, ";
 					}
 				}
