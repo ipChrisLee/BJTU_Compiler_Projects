@@ -305,6 +305,7 @@ struct SLR1Parser {
 			if (actionTableS.count(u)) {
 				for (auto & [v, _]: actionTableS.find(u)->second) {
 					if (vInR.count(v)) {
+						std::cerr << u << " -- " << ruleTypeToStr(v) << std::endl;
 						return false;
 					}
 				}
@@ -385,6 +386,8 @@ struct SLR1Parser {
 			} else if (stateTop == endNode && inputRuleType == endRule) {
 				break;
 			} else {
+				std::cerr << ruleTypeToStr(inputRuleType) << std::endl;
+				std::cerr << stateTop << std::endl;
 				moe_panic("");
 			}
 		}
