@@ -1,0 +1,57 @@
+- digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+- lowerLetter = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+- upperLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z'
+/
+/ Keyword
++ keyVoid = 'v' ~ 'o' ~ 'i' ~ 'd'
++ keyInt = 'i' ~ 'n' ~ 't'
++ keyFloat = 'f' ~ 'l' ~ 'o' ~ 'a' ~ 't'
++ keyIf = 'i' ~ 'f'
++ keyElse = 'e' ~ 'l' ~ 's' ~ 'e'
++ keyFor = 'f' ~ 'o' ~ 'r'
++ keyDo = 'd' ~ 'o'
++ keyWhile = 'w' ~ 'h' ~ 'i' ~ 'l' ~ 'e'
++ keyBreak = 'b' ~ 'r' ~ 'e' ~ 'a' ~ 'k'
++ keyContinue = 'c' ~ 'o' ~ 'n' ~ 't' ~ 'i' ~ 'n' ~ 'u' ~ 'e'
++ keyReturn = 'r' ~ 'e' ~ 't' ~ 'u' ~ 'r' ~ 'n'
+/
+/ Separator
++ sepLParen = '('
++ sepRParen = ')'
+/ Square bracket
++ sepLSBrkt = '['
++ sepRSBrkt = ']'
+/ Curly Brackets
++ sepLCBrkt = '{'
++ sepRCBrkt = '}'
++ sepSemicolon = ';'
+/
++ sepColon = ':'
+/
+/ Operator
++ opMinus = '-'
++ opBang = '!'
++ opAdd = '+'
++ opMul = '*'
++ opDiv = '/'
++ opMod = '%'
++ opLAnd = '&' ~ '&'
++ opLOr = '|' ~ '|'
++ opAssign = '='
++ opEq = '=' ~ '='
++ opNeq = '!' ~ '='
++ opLt = '<'
++ opLe = '<' ~ '='
++ opGt = '>'
++ opGe = '>='
+/
+/ Some element
++ literalInt = &digit ~ &digit *
+- idLetter = &lowerLetter | &upperLetter | '_'
++ idName = &idLetter ~ ( &idLetter | &digit ) *
+/
+/ Some special
+- ws = '\s' | '\t' | '\r' | '\n'
+@ wsStr = &ws ~ &ws *
+- lineCommentLegalCh = &upperLetter | &lowerLetter | &digit | '!' | '@' | '#' | '$' | '%' | '^' | '&' | '*' | '(' | ')' | '-' | '_' | '=' | '+' | '[' | ']' | '{' | '}' | '\\' | '|' | ';' | ':' | '\'' | '"' | ',' | '<' | '.' | '>' | '/' | '?' | '`' | '~' | '\t' | '\s'
+@ lineComment = '/' ~ '/' ~ &lineCommentLegalCh * ~ '\n'

@@ -1,0 +1,48 @@
+CompUnit    	->  BlockContent							%	comp_unit
+BlockContent	->	BlockItem BlockContent					%	block_content_body
+				|	BlockItem								%	block_content_last
+BlockItem		->	Decl sepSemicolon						%	block_item_decl
+				|	Stmt sepSemicolon						%	block_item_stmt
+				|	sepLCBrkt BlockContent sepRCBrkt		%	block_item_block
+				|	keyIf Exp sepColon BlockItem			%	block_item_if
+				|	keyWhile Exp sepColon BlockItem			%	block_item_while
+				|	keyBreak sepSemicolon					%	block_item_break
+				|	keyContinue sepSemicolon				%	block_item_continue
+				|	keyReturn Exp sepSemicolon				%	block_item_return
+Decl			->	VarType idName							%	decl
+VarType			->	BasicType								%	var_type_basic
+				|	BasicType sepLSBrkt ConstExp sepRSBrkt	%	var_type_array
+BasicType		->	keyInt									%	basic_type_int
+				|	keyFloat								%	basic_type_float
+Stmt			->	Val opAssign Exp						%	stmt_assign
+				|	Exp										%	stmt_exp
+Val				->	idName									%	l_val_var
+                |	idName sepLSBrkt Exp sepRSBrkt			%	l_val_indexed_var
+ConstExp		->	AddExp									%	const_exp
+Exp				->	LOrExp									%	exp
+LOrExp			->	LAndExp									%	l_or_exp_flow
+				|	LOrExp opLOr LAndExp					%	l_or_exp_main
+LAndExp			->	LEqExp									%	l_and_exp_flow
+				|	LAndExp opLAnd LEqExp					%	l_and_exp_main
+LEqExp			->	LRelExp									%	l_eq_exp_flow
+				|	LEqExp opNeq LRelExp					%	l_eq_exp_neq
+				|	LEqExp opEq LRelExp						%	l_eq_exp_eq
+LRelExp			->	AddExp									%	l_rel_exp_flow
+				|	LRelExp opLt AddExp						%	l_rel_exp_lt
+				|	LRelExp opLe AddExp						%	l_rel_exp_le
+				|	LRelExp opGt AddExp						%	l_rel_exp_gt
+				|	LRelExp opGe AddExp						%	l_rel_exp_ge
+AddExp			->  MulExp									%	add_exp_flow
+				|	AddExp opAdd MulExp						%	add_exp_add
+				|	AddExp opMinus MulExp					%	add_exp_sub
+MulExp			->	UnaryExp								%	mul_exp_flow
+				|	MulExp opMul UnaryExp					%	mul_exp_mul
+				|	MulExp opDiv UnaryExp					%	mul_exp_div
+				|	MulExp opMod UnaryExp					%	mul_exp_mod
+UnaryExp		->	PrimaryExp								%	unary_exp_flow
+				|	opAdd UnaryExp							%	unary_exp_pos
+				|	opMinus UnaryExp						%	unary_exp_neg
+				|	opBang UnaryExp							%	unary_exp_not
+PrimaryExp		->	sepLParen Exp sepRParen					%	primary_exp_paren_exp
+				|	Val										%	primary_exp_r_val
+				|	literalInt								%	primary_exp_literal_int
