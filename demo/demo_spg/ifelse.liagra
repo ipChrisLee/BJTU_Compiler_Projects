@@ -1,0 +1,4 @@
+CompUnit -> S	% begin
+S -> a S b S % S_1
+	| a S     % S_2
+	| c		% S_3

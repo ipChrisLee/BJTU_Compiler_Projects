@@ -1,0 +1,21 @@
+CompUnit    	->  BlockContent							%	comp_unit
+BlockContent	->	BlockItem BlockContent					%	block_content_body
+				|	BlockItem								%	block_content_last
+BlockItem		->	Stmt sepSemicolon						%	block_item_decl
+Stmt			->	Val opAssign ConstExp					%	stmt_assign
+				|	ConstExp								%	stmt_exp
+Val				->	idName									%	l_val_var
+ConstExp		->	AddExp									%	const_exp
+AddExp			->  MulExp									%	add_exp_flow
+				|	AddExp opAdd MulExp						%	add_exp_add
+				|	AddExp opMinus MulExp					%	add_exp_sub
+MulExp			->	UnaryExp								%	mul_exp_flow
+				|	MulExp opMul UnaryExp					%	mul_exp_mul
+				|	MulExp opDiv UnaryExp					%	mul_exp_div
+				|	MulExp opMod UnaryExp					%	mul_exp_mod
+UnaryExp		->	PrimaryExp								%	unary_exp_flow
+				|	opAdd UnaryExp							%	unary_exp_pos
+				|	opMinus UnaryExp						%	unary_exp_neg
+PrimaryExp		->	sepLParen ConstExp sepRParen			%	primary_exp_paren_exp
+				|	Val										%	primary_exp_r_val
+				|	literalInt								%	primary_exp_literal_int

@@ -16,17 +16,16 @@ cd ${cmake_folder} && make LiaSPG && cd ..
 lialex_exe=${cmake_folder}/LiaLEX/LiaLEX
 liaspg_exe=${cmake_folder}/LiaSPG/LiaSPG
 
-this_demo_path=demo/demo_compiler
+this_demo_path=demo/demo_calculator
 
 lialex_file=${this_demo_path}/B.lialex
 liaspg_file=${this_demo_path}/B.liagra
-mkdir ${this_demo_path}/src/frontend
-target_lexer_info_hpp=${this_demo_path}/src/frontend/b_lexer_info.hpp
-target_parser_info_hpp=${this_demo_path}/src/frontend/b_parser_info.hpp
+target_lexer_info_hpp=${this_demo_path}/src/b_lexer_info.hpp
+target_parser_info_hpp=${this_demo_path}/src/b_parser_info.hpp
 lexer_info_name=b_lexer_info
 parser_info_name=b_parser_info
 
-this_demo_exe=${cmake_folder}/demo/demo_compiler/demo_compiler
+this_demo_exe=${cmake_folder}/demo/demo_calculator/demo_calculator
 this_demo_src=${this_demo_path}/B/src.B
 this_demo_dst=${this_demo_path}/B/dst.txt
 this_demo_lexer_token=${this_demo_path}/B/lexer_token.txt
@@ -39,7 +38,7 @@ ${liaspg_exe} --lex ${lialex_file} --gra ${liaspg_file} --name ${parser_info_nam
   --dest ${target_parser_info_hpp}
 
 # make demo
-cd ${cmake_folder} && make demo_compiler && cd ..
+cd ${cmake_folder} && make demo_calculator && cd ..
 
 # run this demo.
 ${this_demo_exe} \

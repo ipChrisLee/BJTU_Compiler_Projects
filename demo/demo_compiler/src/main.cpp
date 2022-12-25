@@ -5,11 +5,13 @@
 #include <lialex_runtime.hpp>
 #include <locgl_runtime.hpp>
 
-#include "frontend/b_lexer_info.hpp"
-#include "frontend/b_parser_info.hpp"
-
 #include <moe/arg_parser.hpp>
 #include <moe/rt_check.hpp>
+
+#include "frontend/b_lexer_info.hpp"
+#include "frontend/b_parser_info.hpp"
+#include "frontend/ast_visitor.hpp"
+
 
 struct Info {
 	std::optional<std::string> srcFilePath;
@@ -140,6 +142,6 @@ generate_ast() {
 int main(int argc, char ** argv) {
 	parse_info(argc, argv);
 	auto pAst = generate_ast();
-	
+	b_lan::visit_dispatch(pAst);
 	return 0;
 }

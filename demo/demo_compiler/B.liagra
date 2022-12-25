@@ -9,7 +9,9 @@ BlockItem		->	Decl sepSemicolon						%	block_item_decl
 				|	keyBreak sepSemicolon					%	block_item_break
 				|	keyContinue sepSemicolon				%	block_item_continue
 				|	keyReturn Exp sepSemicolon				%	block_item_return
-Decl			->	VarType idName							%	decl
+Decl			->	VarType IdNames							%	decl
+IdNames			->	idName sepComma IdNames					%	id_names_body
+				|	idName									%	id_names_last
 VarType			->	BasicType								%	var_type_basic
 				|	BasicType sepLSBrkt ConstExp sepRSBrkt	%	var_type_array
 BasicType		->	keyInt									%	basic_type_int

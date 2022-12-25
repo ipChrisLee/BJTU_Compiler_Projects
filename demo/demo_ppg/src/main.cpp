@@ -67,6 +67,7 @@ int main() {
 //	std::cout << pASTRoot->to_dot(ll_parser_info::ruleTypeToStr) << std::endl;
 //	std::cout << "}" << std::endl;
 	
+//	auto pASTRoot = parser.parse_with_pp(parserRules);
 	auto pASTRoot = parser.parse_with_table(parserRules);
 	std::cout << "digraph ast{" << std::endl;
 	std::cout << pASTRoot->to_dot(ll_parser_info::ruleTypeToStr) << std::endl;

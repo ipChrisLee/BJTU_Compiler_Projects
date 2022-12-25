@@ -14,6 +14,7 @@ add_link_options(-lm -v)
 add_library(
 		LiaIR SHARED
 		liair/Addr.cpp
+		liair/Instr.cpp
 )
 target_link_libraries(LiaIR moe)
 

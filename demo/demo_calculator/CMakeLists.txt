@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(demo_compiler)
+project(demo_calculator)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
@@ -15,11 +15,8 @@ add_compile_options(
 add_link_options(-lm -v)
 
 add_executable(
-		demo_compiler
+		demo_calculator
 		src/main.cpp
-		src/frontend/typedef_for_b.cpp
-		src/frontend/ast_visitor.cpp
-		src/frontend/ast_visitor_for_block.cpp src/frontend/ast_visitor_for_decl.cpp)
-target_link_libraries(demo_compiler moe)
-target_link_libraries(demo_compiler LoCGL)
-target_link_libraries(demo_compiler LiaIR)
+)
+target_link_libraries(demo_calculator moe)
+target_link_libraries(demo_calculator LoCGL)

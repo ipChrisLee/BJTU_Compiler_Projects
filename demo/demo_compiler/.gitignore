@@ -1,2 +1,4 @@
 B/*
-src/frontend/*
+!B/src.B
+src/frontend/b_lexer_info.hpp
+src/frontend/b_parser_info.hpp

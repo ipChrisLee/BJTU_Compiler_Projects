@@ -19,9 +19,9 @@ liaspg_exe=${cmake_folder}/LiaSPG/LiaSPG
 this_demo_path=demo/demo_spg
 
 lialex_file=${this_demo_path}/LL.lialex
-#lialex_file=${this_demo_path}/LL_with_literal.lialex
+#lialex_file=${this_demo_path}/ifelse.lialex
 liaspg_file=${this_demo_path}/LL.liagra
-#liaspg_file=${this_demo_path}/LL_with_literal.liagra
+#liaspg_file=${this_demo_path}/ifelse.liagra
 target_lexer_info_hpp=${this_demo_path}/src/ll_lexer_info.hpp
 target_parser_info_hpp=${this_demo_path}/src/ll_parser_info.hpp
 lexer_info_name=ll_lexer_info
